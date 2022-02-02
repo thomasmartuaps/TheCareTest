@@ -1,7 +1,10 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Text, View, TextInput, Pressable } from "react-native";
-import ImagePicker from "react-native-image-picker";
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from "react-native-image-picker";
 
 import styles from "../styles";
 import { CATEGORIES } from "../constants";
@@ -15,45 +18,25 @@ export default function NavigationPage() {
   const [price, setPrice] = useState<Number>(0);
   const [image, setImage] = useState<String>("");
 
-  const selectFile = () => {
-    var options = {
-      title: "Select Image",
+  const publishProduct = () => {};
 
-      customButtons: [
-        {
-          name: "customOptionKey",
-
-          title: "Choose file from Custom Option",
-        },
-      ],
-
-      storageOptions: {
-        skipBackup: true,
-
-        path: "images",
-      },
+  const selectFile = useCallback(() => {
+    const options: ImageLibraryOptions = {
+      mediaType: "photo",
+      selectionLimit: 1,
+      maxWidth: 1000,
+      maxHeight: 1000,
     };
 
-    ImagePicker.showImagePicker(options, (res) => {
+    launchImageLibrary(options, async (res) => {
       console.log("Response = ", res);
-
-      if (res.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (res.error) {
-        console.log("ImagePicker Error: ", res.error);
-      } else if (res.customButton) {
-        console.log("User tapped custom button: ", res.customButton);
-
-        alert(res.customButton);
-      } else {
-        let source = res;
-
-        this.setState({
-          resourcePath: source,
-        });
+      const { assets } = res;
+      if (assets) {
+        const imageData = assets[0];
+        console.log(imageData.uri, "upload this to cloudinary?");
       }
     });
-  };
+  }, []);
 
   return (
     <View style={styles.background}>
@@ -137,7 +120,7 @@ export default function NavigationPage() {
         </View>
       </View>
       <View style={{ width: 333, marginTop: 10, marginBottom: 10 }}>
-        <Pressable style={styles.publishButton}>
+        <Pressable style={styles.publishButton} onPress={selectFile}>
           <Text style={styles.publishText}>'Upload Image'</Text>
         </Pressable>
       </View>
