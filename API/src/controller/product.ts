@@ -29,15 +29,19 @@ export class ProductController {
       image,
     });
     const result = await newProduct.save();
-    return res.status(200).json({
-      msg: "Create successful",
-      status: "ok",
+    if (result) {
+      return res.status(200).json({
+        msg: "Create successful",
+        status: "ok",
+        result,
+      });
+    }
+    return res.status(400).json({
+      status: "error bad requeest",
     });
   }
 
   static async read(req: ProductRequest<Product>, res: Response) {
-      return res.status(200).json({
-          
-      })
+    return res.status(200).json({});
   }
 }
