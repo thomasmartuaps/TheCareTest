@@ -5,6 +5,7 @@ import {
   launchImageLibrary,
   ImageLibraryOptions,
 } from "react-native-image-picker";
+import { ScrollView } from "react-native-gesture-handler";
 
 import styles from "../styles";
 import { CATEGORIES } from "../constants";
@@ -40,7 +41,7 @@ export default function NavigationPage() {
 
   return (
     <View style={styles.background}>
-      <View style={styles.form}>
+      <ScrollView style={styles.form}>
         <View style={{ width: 333, marginTop: 44, marginBottom: 22 }}>
           <Text style={{ fontWeight: "700", fontSize: 37, width: 333 }}>
             Add New Product
@@ -87,6 +88,7 @@ export default function NavigationPage() {
             const isSelected = tags[0] === category ? true : false;
             return (
               <Pressable
+                key={`tag-${category}`}
                 style={
                   isSelected
                     ? styles.selectedCategoryButton
@@ -118,17 +120,17 @@ export default function NavigationPage() {
             placeholder="Price"
           ></TextInput>
         </View>
-      </View>
-      <View style={{ width: 333, marginTop: 10, marginBottom: 10 }}>
-        <Pressable style={styles.publishButton} onPress={selectFile}>
-          <Text style={styles.publishText}>'Upload Image'</Text>
-        </Pressable>
-      </View>
-      <View style={{ width: 333, marginTop: 10, marginBottom: 10 }}>
-        <Pressable style={styles.publishButton}>
-          <Text style={styles.publishText}>'Publish'</Text>
-        </Pressable>
-      </View>
+        <View style={{ width: 333, marginTop: 10, marginBottom: 10 }}>
+          <Pressable style={styles.publishButton} onPress={selectFile}>
+            <Text style={styles.publishText}>'Upload Image'</Text>
+          </Pressable>
+        </View>
+        <View style={{ width: 333, marginTop: 10, marginBottom: 10 }}>
+          <Pressable style={styles.publishButton}>
+            <Text style={styles.publishText}>'Publish'</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </View>
   );
 }
